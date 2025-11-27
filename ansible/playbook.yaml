@@ -1,0 +1,17 @@
+-
+    name: Play1
+    hosts: ubuntu
+    tasks:
+        -
+            name: 'Update and upgrade apt packages'
+            apt:
+                upgrade: yes
+                update_cache: yes
+        -
+            name: 'Nginx install'
+            apt:
+                name: nginx
+                state: latest
+        -
+            name: 'Nginx start'
+            command: 'sudo systemctl start nginx'

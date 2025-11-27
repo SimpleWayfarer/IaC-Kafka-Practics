@@ -1,0 +1,17 @@
+# Пример простого IaC (Terraform + Ansible) на Yandex Cloud 
+Данный пример создает с помощью Terraform виртуальную машину в Yandex Cloud и устаналивает на ней веб-сервер nginx с помощью Ansible.
+
+# Установка компонентов 
+1) Установка и инициализация интерфейса командной строки Yandex Cloud https://yandex.cloud/ru/docs/cli/quickstart
+2) Установка Terraform https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+3) Установка Ansible https://docs.ansible.com/projects/ansible/latest/installation_guide/intro_installation.html
+
+# Подготовка запуска
+1) Создать SSH ключи для подключения к облаку https://yandex.cloud/ru/docs/organization/operations/add-ssh
+2) Сохранить ключи в папке /home/user/.ssh Имя id_rsa для приватного, id_rsa.pub для публичного. Публичный ключ нужен terraform при создании виртуальной машины (переменная public_key_file в terraform/main.tf), приватный ключ используется Ansible для подключения к созданной виртуальной машине (переменная private_key_file в main.sh) 
+3) Сделать файл main.sh исполняемым командой chmod +x ./main.sh
+4) Запустить ./main.sh
+
+# Удаление виртуальной машины
+1) Сделать файл ./destroy.sh исполняемым командой chmod +x ./destroy.sh
+2) Запустить ./terraform/destroy.sh
