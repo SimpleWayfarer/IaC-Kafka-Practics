@@ -1,4 +1,3 @@
-# Пример простого IaC (Terraform + Ansible) на Yandex Cloud 
 Данный пример создает с помощью Terraform виртуальную машину в Yandex Cloud и устаналивает на ней веб-сервер nginx с помощью Ansible.
 
 # Установка компонентов 
