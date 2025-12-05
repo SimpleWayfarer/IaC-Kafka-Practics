@@ -22,7 +22,7 @@ chmod +x ./main.sh
 ```
 chmod +x ./terraform/destroy.sh
 ```
-3) Запустить
+2) Запустить
 ```
 ./terraform/destroy.sh
 ```
