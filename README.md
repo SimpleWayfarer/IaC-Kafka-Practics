@@ -8,7 +8,7 @@
 # Подготовка запуска
 1) Создать SSH ключи для подключения к облаку https://yandex.cloud/ru/docs/organization/operations/add-ssh
 2) Сохранить ключи в папке /home/user/.ssh Имя id_rsa для приватного, id_rsa.pub для публичного. Публичный ключ нужен terraform при создании виртуальной машины (переменная public_key_file в terraform/main.tf), приватный ключ используется Ansible для подключения к созданной виртуальной машине (переменная private_key_file в main.sh) 
-3) Сделать файл main.sh исполняемым командой
+3) Сделать файл main.sh исполняемым
 ```
 chmod +x ./main.sh
 ```
