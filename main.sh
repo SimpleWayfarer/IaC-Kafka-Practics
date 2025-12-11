@@ -8,7 +8,7 @@ export YC_FOLDER_ID=$(yc config get folder-id)
 echo "Запуск Terraform"
 terraform init
 terraform plan
-terraform apply
+echo "yes" | terraform apply
 
 #создание файла с хостом для ansible
 ip_adress=$(terraform output | tr -d ' "')
