@@ -1,5 +1,3 @@
-Данный пример создает с помощью Terraform виртуальную машину в Yandex Cloud и устаналивает на ней веб-сервер nginx с помощью Ansible.
-
 # Установка компонентов 
 1) [Установка и инициализация интерфейса командной строки Yandex Cloud](https://yandex.cloud/ru/docs/cli/quickstart)
 2) [Установка Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
