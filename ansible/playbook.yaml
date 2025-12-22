@@ -1,17 +1,85 @@
--
-    name: Play1
-    hosts: ubuntu
-    tasks:
-        -
-            name: 'Update and upgrade apt packages'
-            apt:
-                upgrade: yes
-                update_cache: yes
-        -
-            name: 'Nginx install'
-            apt:
-                name: nginx
-                state: latest
-        -
-            name: 'Nginx start'
-            command: 'sudo systemctl start nginx'
+- 
+  hosts: producer
+  vars_files:
+    - ./FQDN.yaml
+
+  tasks:
+    - name: 'Update and upgrade apt packages'
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: 'Create Directory'
+      ansible.builtin.command: 
+        sudo mkdir -p /usr/local/share/ca-certificates/Yandex 
+      
+    - name: 'Download certificate'
+      ansible.builtin.command: 
+        sudo wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document /usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.crt 
+
+    - name: 'Configure certificate rights'
+      ansible.builtin.command: 
+        sudo chmod 0655 /usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.crt
+
+    - name: 'Install kafkacat'
+      ansible.builtin.package:
+        name:
+          - kafkacat
+        state: present
+
+    - name: 'Sending message to Kafka'
+      ansible.builtin.command: 'echo "Hello Kafka!" | kafkacat -P \
+       -b {{ FQDN }}:9091 \
+       -t kafka-topic\
+       -k key \
+       -X security.protocol=SASL_SSL\
+       -X sasl.mechanism=SCRAM-SHA-512 \
+       -X sasl.username="user" \
+       -X sasl.password="password"\ 
+       -X ssl.ca.location=/usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.crt -Z'
+      changed_when: false
+
+- 
+  hosts: consumer
+  vars_files:
+    - ./FQDN.yaml
+
+  tasks:
+    - name: 'Update and upgrade apt packages'
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: 'Create Directory'
+      ansible.builtin.command: 
+        sudo mkdir -p /usr/local/share/ca-certificates/Yandex 
+      
+    - name: 'Download certificate'
+      ansible.builtin.command: 
+        sudo wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document /usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.crt 
+
+    - name: 'Configure certificate rights'
+      ansible.builtin.command: 
+        sudo chmod 0655 /usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.crt
+
+    - name: 'Install kafkacat'
+      ansible.builtin.package:
+        name:
+          - kafkacat
+        state: present
+
+    - name: 'Getting message from Kafka'
+      ansible.builtin.command: 'kafkacat -C  \       
+        -b {{ FQDN }}:9091 \
+        -t kafka-topic \          
+        -X security.protocol=SASL_SSL \
+        -X sasl.mechanism=SCRAM-SHA-512 \   
+        -X sasl.username="user" \
+        -X sasl.password="password" \ 
+        -X ssl.ca.location=/usr/local/share/ca-certificates/Yandex/YandexInternalRootCA.crt -Z -c 1'
+      register: kafka_message
+      changed_when: false
+
+    - name: 'Display message'
+      ansible.builtin.debug:
+        var: kafka_message.stdout
