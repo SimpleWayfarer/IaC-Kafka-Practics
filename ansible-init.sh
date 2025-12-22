@@ -5,8 +5,9 @@ consumer_ip=$(yc compute instance get consumer --format json | jq .network_inter
 
 #Запись IP-адрессов
 touch ansible/hosts.ini
-echo "producer ansible_host=$producer_ip ansible_user=ubuntu ansible_private_key_file=/home/user/.ssh/id_rsa ansible_become=yes" >> ansible/hosts.ini
-echo "consumer ansible_host=$consumer_ip ansible_user=ubuntu ansible_private_key_file=/home/user/.ssh/id_rsa ansible_become=yes" >> ansible/hosts.ini
+private_key_file="/home/user/.ssh/id_rsa"
+echo "producer ansible_host=$producer_ip ansible_user=ubuntu ansible_private_key_file=$private_key_file ansible_become=yes" >> ansible/hosts.ini
+echo "consumer ansible_host=$consumer_ip ansible_user=ubuntu ansible_private_key_file=$private_key_file ansible_become=yes" >> ansible/hosts.ini
 
 #Получение и запись FQDN кластера
 cluster_fqdn=$(yc managed-kafka cluster list-hosts kafka-cluster --format json | jq  '.[0].name' -r)
