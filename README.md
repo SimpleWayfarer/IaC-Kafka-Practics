@@ -1,3 +1,4 @@
+Создание кластера Apache Kafka в Yandex Cloud с помощью Terraform и конфигурирование ВМ Producer и Consumer с помощью Ansible
 # Установка компонентов 
 1) [Установка и инициализация интерфейса командной строки Yandex Cloud](https://yandex.cloud/ru/docs/cli/quickstart)
 2) [Установка Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
